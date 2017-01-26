@@ -1,0 +1,43 @@
+
+.todo-list {
+
+  .todo-item {
+    border-radius: 3px;
+    background: #dbdbdb;
+    border-bottom: 1px solid #919191;
+    padding: 5px;
+    margin: 2px 0 10px 0;
+    transition: background 0.2s;
+
+    &.complete {
+      background: #87d2a1;
+    }
+
+    .todo-options{
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      .remove-button {
+        cursor: pointer;
+        color: #ff4c4d;
+      }
+
+      .complete-button {
+        cursor: pointer;
+        color: #34c749;
+      }
+
+    }
+
+    &:hover {
+
+      .todo-options {
+        opacity: 1;
+      }
+
+    }
+
+  }
+
+}
+

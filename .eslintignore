@@ -1,0 +1,4 @@
+log/*
+node_modules/*
+src/client/style/**/*.scss
+src/test/**/*
