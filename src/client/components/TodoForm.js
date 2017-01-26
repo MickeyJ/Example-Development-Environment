@@ -5,8 +5,8 @@ type todoFormPropTypes = {
   todoTitle: string,
   todoText: string,
   handleAddTodo(): void,
-  handleTitleInputChange (todoTitle: string): void,
-  handleTextInputChange (todoText: string): void
+  handleTitleInputChange(todoTitle: string): void,
+  handleTextInputChange(todoText: string): void
 }
 
 const TodoForm = (props: todoFormPropTypes) => {
