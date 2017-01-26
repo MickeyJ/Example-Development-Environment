@@ -1,6 +1,6 @@
 #Example Development Environment
 
-- Set up with gulp => eslint, Flow
+- Gulp => eslint, Flow
 
 - Webpack => React, Redux, SCSS
 
