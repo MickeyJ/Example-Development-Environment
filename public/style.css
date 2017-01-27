@@ -1,2 +1,0 @@
-.todo-list .todo-item{border-radius:3px;background:#dbdbdb;border-bottom:1px solid #919191;padding:5px;margin:2px 0 10px;transition:background .2s}.todo-list .todo-item.complete{background:#87d2a1}.todo-list .todo-item .todo-options{opacity:0;transition:opacity .2s}.todo-list .todo-item .todo-options .remove-button{cursor:pointer;color:#ff4c4d}.todo-list .todo-item .todo-options .complete-button{cursor:pointer;color:#34c749}.todo-list .todo-item:hover .todo-options{opacity:1}
-/*# sourceMappingURL=style.css.map*/
