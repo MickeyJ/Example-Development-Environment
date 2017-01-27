@@ -10,7 +10,13 @@
     "check:watch": "gulp check-watch",
     "dev-server": "NODE_ENV=development webpack-dev-server --inline --hot"
   },
-  "keywords": ["eslint", "flow", "react", "redux", "webpack"],
+  "keywords": [
+    "eslint",
+    "flow",
+    "react",
+    "redux",
+    "webpack"
+  ],
   "author": "Mickey J Malotte",
   "devDependencies": {
     "babel-core": "^6.22.1",
@@ -31,11 +37,13 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "flow-bin": "^0.38.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-eslint": "^3.0.1",
     "gulp-flowtype": "^1.0.0",
+    "html-webpack-plugin": "^2.26.0",
     "jquery": "^3.1.1",
     "jsdom": "^9.9.1",
     "lodash": "^4.17.4",

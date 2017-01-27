@@ -1,14 +1,23 @@
 const webpack = require('webpack');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const DEV = process.env.NODE_ENV==='development';
+const __DEV__= process.env.NODE_ENV==='development';
 const host = 'localhost';
 
+const VENDOR_LIBS = [
+  'react', 'react-dom', 'redux', 'react-redux'
+];
+
 const config = {
-  entry: './src/client',
+  entry: {
+    bundle: './src/client',
+    vendor: VENDOR_LIBS
+  },
   output: {
     path:'./public',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   devServer: {
     host: host,
@@ -17,11 +26,18 @@ const config = {
       index: '/index.html'
     }
   },
-  devtool: DEV ? 'inline-source-map' : 'source-map',
+  devtool: __DEV__? 'inline-source-map' : 'source-map',
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new ExtractTextPlugin("style.css"),
+    new webpack.NoErrorsPlugin(),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
-    new webpack.NoErrorsPlugin()
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/client/index.html'
+    })
   ],
   module: {
     loaders: [
@@ -34,14 +50,13 @@ const config = {
       },
       {
         test: /\.scss/,
-        exclude: /node_modules/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loader: ExtractTextPlugin.extract("style", "css!sass"),
       }
     ]
   }
 };
 
-if(DEV){
+if(__DEV__){
   config.module.loaders[0].query.presets.push('react-hmre');
   config.plugins.push(
     new OpenBrowserPlugin({ url: `http://${host}:8080` })
