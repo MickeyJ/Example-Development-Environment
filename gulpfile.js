@@ -3,13 +3,14 @@ const eslint = require('gulp-eslint');
 const flow = require('gulp-flowtype');
 const config = require('./config');
 
-const sourcePath = config.path.src+'/client/**/*.*';
+const sourcePath = config.path.src+'/**/*.js';
 
 gulp.task('lint', () =>
   gulp.src([sourcePath,'!node_modules/**'])
     .pipe(eslint())
     .pipe(eslint.failAfterError())
 );
+
 
 gulp.task('flow', () =>
   gulp.src(sourcePath)

@@ -1,78 +1,75 @@
+const path = require('path');
+const config = require('./config');
 const webpack = require('webpack');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const __DEV__= process.env.NODE_ENV==='development';
 const host = 'localhost';
+const __DEV__= config.env==='development';
 
-const VENDOR_LIBS = [
-  'react', 'react-dom', 'redux', 'react-redux'
-];
-
-const config = {
+const webpackConfig = {
   entry: {
-    bundle: './src/client',
-    vendor: VENDOR_LIBS
+    bundle: path.join(config.path.src, 'index.js'),
+    vendor: config.VENDOR_LIBS
   },
   output: {
-    path:'./public',
-    filename: '[name].js'
-  },
-  devServer: {
-    host: host,
-    contentBase: 'public',
-    historyApiFallback: {
-      index: '/index.html'
-    }
+    path: config.path.dist,
+    filename: '[name].[chunkhash].js'
   },
   devtool: __DEV__? 'inline-source-map' : 'source-map',
-  plugins: [
-    new ExtractTextPlugin("style.css"),
-    new webpack.NoErrorsPlugin(),
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
-    }),
-    new HtmlWebpackPlugin({
-      template: 'src/client/index.html'
-    })
-  ],
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: { presets: [] },
-        babelrc: true
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/
       },
       {
-        test: /\.scss/,
-        loader: ExtractTextPlugin.extract("style", "css!sass"),
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract({
+          loader: 'css-loader!sass-loader'
+        })
       }
     ]
-  }
+  },
+  plugins: [
+    new ExtractTextPlugin('style.css'),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor', 'manifest']
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(config.path.src, 'index.html')
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(config.env)
+    })
+  ]
 };
 
 if(__DEV__){
-  config.module.loaders[0].query.presets.push('react-hmre');
-  config.plugins.push(
+  webpackConfig.module.rules[0].query = { presets: ['react-hmre'] };
+  webpackConfig.plugins.push(
     new OpenBrowserPlugin({ url: `http://${host}:8080` })
   )
 } else {
-  config.plugins.push(
-    new webpack.optimize.DedupePlugin(),
+  webpackConfig.plugins.push(
+    new OptimizeCssAssetsPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      mangle: false,
-      compressor: {
-        drop_console: true,
-        warnings: true
+      beautify: false,
+      comments: false,
+      compress: {
+        warnings: false,
+        drop_console: true
+      },
+      mangle: {
+        except: ['webpackJsonp'],
+        screw_ie8 : true,
+        keep_fnames: true,
       }
     })
-  );
+  )
 }
 
-module.exports = config;
+module.exports = webpackConfig;

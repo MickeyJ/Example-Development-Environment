@@ -10,12 +10,10 @@
     transition: background 0.2s;
 
     &.complete {
-      background: #87d2a1;
+      background: #76a7d2;
     }
 
     .todo-options{
-      opacity: 0;
-      transition: opacity 0.2s;
 
       .remove-button {
         cursor: pointer;
@@ -25,14 +23,6 @@
       .complete-button {
         cursor: pointer;
         color: #34c749;
-      }
-
-    }
-
-    &:hover {
-
-      .todo-options {
-        opacity: 1;
       }
 
     }
